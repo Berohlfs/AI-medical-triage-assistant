@@ -17,15 +17,27 @@
             width: 90%;
             margin: 10px auto;
             position: relative;
-            height: 95vh;
+            height: 85vh;
             display: flex;
             flex-direction: column;
         }
 
-        h1 {
-            font-size: 20px;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #1111;
             padding-bottom: 20px;
+        }
+
+        header>button{
+            border:none;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 20px;
         }
 
         #chat {
@@ -103,7 +115,11 @@
     <main>
         <p id="loading">Pensando...</p>
 
-        <h1>Triagem Médica com IA</h1>
+        <header>
+            <h1>Triagem Médica com IA</h1>
+            <button onclick="clearConversation()">Limpar histórico</button>
+        </header>
+
         <div id="chat">
         </div>
         <form id="controls">
@@ -122,6 +138,18 @@
             div.className = 'msg ' + sender
             div.innerText = text
             chat.appendChild(div)
+        }
+
+        const clearConversation = async () => {
+            try {
+                const res = await fetch('https://n8nwebhook.psmotta.cloud/webhook/Apagar-Conversa', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                chat.innerHTML = ``
+            } catch (error) {
+                alert('Erro ao limpar a conversa')
+            }
         }
 
         async function sendMessage(e) {
