@@ -2,6 +2,14 @@
 
 Um assistente de triagem médica automatizado baseado em IA, criado para simular conversas entre pacientes e profissionais da saúde, com foco em orientar o atendimento inicial.
 
+| Participantes |
+| --- |
+| Pedro Motta |
+| Bernardo Rohlfs |
+| Hitalo Silveira |
+| Eric Jardim |
+| Vitor Lion |
+
 ---
 
 ## 📚 Base de Dados
