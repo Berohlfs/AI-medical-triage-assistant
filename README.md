@@ -26,6 +26,8 @@ Você pode interagir com o assistente diretamente por aqui:
 
 🌐 [Demo ao vivo](https://berohlfs.github.io/AI-medical-triage-assistant/)
 
+[Demo - Imagem](./demo.png)
+
 ---
 
 ## 🛠️ Como funciona

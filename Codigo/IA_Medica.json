@@ -1,0 +1,615 @@
+{
+  "name": "IA Medica",
+  "nodes": [
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \n  \"success\": {{ $json.success }}\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1560,
+        140
+      ],
+      "id": "4201e839-8a07-4db2-a685-868be271e76a",
+      "name": "200"
+    },
+    {
+      "parameters": {
+        "respondWith": "noData",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1560,
+        360
+      ],
+      "id": "dbd91365-737c-4c23-87f6-62617a26dc33",
+      "name": "400"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_zfCfVBVlRIhBgMJ22CCcdlEa",
+          "mode": "list",
+          "cachedResultName": "Dra. Clara"
+        },
+        "prompt": "define",
+        "text": "={{ $json.mensagem }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        120,
+        140
+      ],
+      "id": "90b197b0-c79a-4137-bd06-dc59b22c81e4",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "1AZlgq9lkU7d4Aaa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -360,
+        -420
+      ],
+      "id": "9a8b42b5-22b4-4846-b2e0-b9d318710aba",
+      "name": "When chat message received",
+      "webhookId": "8ee4a62b-9639-4839-adf5-2c34c2c63607"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para acessar a base de dados de medicamentos para sintomas leves.",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1lLhJBf9POl9SWe2RENNapb0IJp-sAanTmPu5pvsC4NQ/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 157441476,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lLhJBf9POl9SWe2RENNapb0IJp-sAanTmPu5pvsC4NQ/edit#gid=157441476"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        160,
+        380
+      ],
+      "id": "0ccf41d1-d9e9-40a1-86bb-a4a06c060861",
+      "name": "Medicamentos",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X68AHP3hBxEwOTnH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Medical-AI",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        140
+      ],
+      "id": "fe9ad334-bb48-4007-991f-c71d1402b288",
+      "name": "Webhook",
+      "webhookId": "54e848ed-840d-4073-850f-37a6ce389446"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        520,
+        140
+      ],
+      "id": "4869249b-28d3-43a1-a0cd-ffb2a0cffa99",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c4e38c87-ff5d-4cc1-8c07-d04bed8b50c6",
+              "name": "mensagem",
+              "value": "={{ $json.body.mensagem }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        140
+      ],
+      "id": "47e51d4e-0237-4d54-a8bf-727e5081eeab",
+      "name": "Variáveis"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c4e38c87-ff5d-4cc1-8c07-d04bed8b50c6",
+              "name": "mensagem",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        -420
+      ],
+      "id": "84d548d6-dcdd-49c6-874d-dc7a818d9e0a",
+      "name": "Variáveis1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').last().json.headers?.[\"x-real-ip\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        380
+      ],
+      "id": "75e51798-94a5-416d-96a2-c5d207b75395",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "JjCCFt3NLq9iD6mg",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_zfCfVBVlRIhBgMJ22CCcdlEa",
+          "mode": "list",
+          "cachedResultName": "Dra. Clara"
+        },
+        "prompt": "define",
+        "text": "={{ $json.mensagem }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        120,
+        -420
+      ],
+      "id": "38c4784e-06c7-4885-aa43-5080d508fd05",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "1AZlgq9lkU7d4Aaa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para acessar a base de dados de medicamentos para sintomas leves.",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1lLhJBf9POl9SWe2RENNapb0IJp-sAanTmPu5pvsC4NQ/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 157441476,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lLhJBf9POl9SWe2RENNapb0IJp-sAanTmPu5pvsC4NQ/edit#gid=157441476"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        160,
+        -180
+      ],
+      "id": "df7666b3-2395-41c7-90bb-b213f1455e92",
+      "name": "Medicamentos1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "X68AHP3hBxEwOTnH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        520,
+        -420
+      ],
+      "id": "75aad411-2b9e-4c2b-aaae-d58eee36d7e1",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        -180
+      ],
+      "id": "93f6a025-a3d0-45f9-9b5f-75073f9e711f",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "JjCCFt3NLq9iD6mg",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Produção",
+        "height": 520,
+        "width": 1240,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        40
+      ],
+      "id": "7d4ccba4-9ceb-444b-8369-a8e7f5ae344f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Teste",
+        "height": 500,
+        "width": 1240
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -500
+      ],
+      "id": "c0aa55ed-72df-490a-bee4-49af63834e98",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $json.headers[\"x-real-ip\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1120,
+        240
+      ],
+      "id": "2be9c456-511a-4aee-8be4-8d7d54056b95",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "JjCCFt3NLq9iD6mg",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "Apagar-Conversa",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        900,
+        240
+      ],
+      "id": "f415a515-ad98-4958-bfd3-e8dc2669cb46",
+      "name": "Apagar Conversa",
+      "webhookId": "4b4293a2-0fbf-400e-aa0b-f8073ed8f6af"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "43ae6966-5862-4488-adcc-3cc706fe4e80",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1340,
+        240
+      ],
+      "id": "c84df2b0-495a-4c51-a284-a83fa3e85265",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "# Apagar conversa",
+        "height": 520,
+        "width": 1000,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        840,
+        40
+      ],
+      "id": "764bc54e-51ef-45b0-a7ea-16d6e95d2d6f",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Variáveis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Medicamentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Variáveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variáveis1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Medicamentos1": {
+      "ai_tool": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apagar Conversa": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "200",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "400",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1e7b81c7-e3b7-45ef-a679-afa1ec2f9840",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d1e298d5f7d2d983f0dffcc27a5b6d9aad30fab86a5c98e7a8e0a8b922b8f08f"
+  },
+  "id": "z5DEULI82znLynte",
+  "tags": []
+}

@@ -1,17 +1,11 @@
 # 🧩 Código (n8n)
 
-Esta pasta contém o arquivo `.json` referente ao fluxo criado no **n8n**, utilizado para a automação da triagem médica via IA.
+Esta pasta contém o arquivo `.json` referente ao fluxo criado no **n8n**, utilizado para a automação da triagem médica via IA. Além disso, temos o arquivo `.jsonl` utilizado para treinar o modelo `4o mini`.
 
 ## 📂 Conteúdo
 
-- `fluxo-n8n.json`: fluxo exportado diretamente da interface do n8n.
-
-## 💡 Uso
-
-Para importar no n8n:
-1. Acesse seu n8n.
-2. Clique em **Import** no menu lateral.
-3. Cole o conteúdo do arquivo ou faça upload direto.
+- `IA_Medica.json`: fluxo exportado diretamente da interface do n8n.
+- `fine_tune_pre_atendimento_medico.jsonl`: Base de conversas de atendimentos médicos, utilizada para treinamento do modelo.
 
 ---
 
